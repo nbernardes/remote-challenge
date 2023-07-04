@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "Starting Phoenix server in debug mode"
+iex -S mix phx.server

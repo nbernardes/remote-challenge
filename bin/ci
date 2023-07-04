@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo "Running ${RED}mix format --check-formatted${NC}"
+mix format --check-formatted
+
+echo "Running ${RED}mix sobelow --config${NC}"
+mix sobelow --config
+
+echo "Running ${RED}mix credo --strict${NC}"
+mix credo --strict
+
+echo "Running ${RED}mix test${NC}"
+mix test
