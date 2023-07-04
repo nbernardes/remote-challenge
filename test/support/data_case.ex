@@ -26,6 +26,7 @@ defmodule Remote.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Remote.DataCase
+      import Remote.Factory
     end
   end
 

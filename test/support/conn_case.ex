@@ -25,8 +25,9 @@ defmodule RemoteWeb.ConnCase do
       use RemoteWeb, :verified_routes
 
       # Import conveniences for testing with connections
-      import Plug.Conn
       import Phoenix.ConnTest
+      import Plug.Conn
+      import Remote.Factory
       import RemoteWeb.ConnCase
     end
   end

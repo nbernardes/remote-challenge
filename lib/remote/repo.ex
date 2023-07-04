@@ -3,5 +3,5 @@ defmodule Remote.Repo do
     otp_app: :remote,
     adapter: Ecto.Adapters.Postgres
 
-  use Paginator
+  use Scrivener, page_size: 50, max_page_size: 50
 end
