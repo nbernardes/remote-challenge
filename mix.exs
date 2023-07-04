@@ -38,6 +38,7 @@ defmodule Remote.MixProject do
       {:ex_machina, "~> 2.7.0", only: :test},
       {:faker, "~> 0.17", only: [:dev, :test]},
       {:jason, "~> 1.2"},
+      {:money, "~> 1.12"},
       {:phoenix, "~> 1.7.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_live_dashboard, "~> 0.8.0"},

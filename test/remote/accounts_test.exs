@@ -109,4 +109,37 @@ defmodule Remote.AccountsTest do
       assert user.id == user_b.id
     end
   end
+
+  describe "create_salary/1" do
+    test "creates salary for user" do
+      user = insert(:user)
+
+      {:ok, salary} =
+        Accounts.create_salary(%{amount: Money.new(100, :USD), user_id: user.id})
+
+      assert salary.user_id == user.id
+    end
+
+    test "fails when missing required field" do
+      user = insert(:user)
+
+      {:error, changeset_amount} =
+        Accounts.create_salary(%{user_id: user.id})
+
+      {:error, changeset_user_id} =
+        Accounts.create_salary(%{amount: Money.new(100, :USD)})
+
+      assert "can't be blank" in errors_on(changeset_amount).amount
+      assert "can't be blank" in errors_on(changeset_user_id).user_id
+    end
+
+    test "fails when more than 1 active salary" do
+      %{user: user} = insert(:salary)
+
+      {:error, changeset} =
+        Accounts.create_salary(%{user_id: user.id, amount: Money.new(100, :USD)})
+
+      assert "only one active salary allowed per user" in errors_on(changeset).user_id
+    end
+  end
 end

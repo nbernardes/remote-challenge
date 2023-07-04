@@ -2,13 +2,24 @@ defmodule Remote.Accounts do
   @moduledoc "The accounts context."
   import Ecto.Query
 
+  alias Remote.Accounts.Salary
   alias Remote.Accounts.User
   alias Remote.Repo
 
   @typep changeset(x) :: Ecto.Changeset.t(x)
+  @typep create_salary_attrs :: %{
+           amount: Money.t(),
+           user_id: User.id(),
+           inactive_at: DateTime.t()
+         }
   @typep create_user_attrs :: %{name: binary}
-  @typep user :: User.t()
   @typep page :: Scrivener.Page.t()
+  @typep salary :: Salary.t()
+  @typep user :: User.t()
+
+  #
+  # User
+  #
 
   @spec create_user(create_user_attrs) ::
           {:ok, user} | {:error, changeset(user)}
@@ -67,5 +78,17 @@ defmodule Remote.Accounts do
       [u],
       {^order, fragment("similarity(?, ?)", ^search, u.name)}
     )
+  end
+
+  #
+  # Salary
+  #
+
+  @spec create_salary(create_salary_attrs) ::
+          {:ok, salary} | {:error, changeset(salary)}
+  def create_salary(attrs) do
+    %Salary{}
+    |> Salary.changeset(attrs)
+    |> Repo.insert()
   end
 end

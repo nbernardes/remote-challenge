@@ -4,8 +4,13 @@ defmodule Remote.Accounts.User do
 
   import Ecto.Changeset
 
+  alias Remote.Accounts.Salary
+
   schema "users" do
     field :name, :string
+
+    has_one :active_salary, Salary, where: [inactive_at: nil]
+    has_many :salaries, Salary
 
     timestamps()
   end
