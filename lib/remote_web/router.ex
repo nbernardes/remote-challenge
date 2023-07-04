@@ -7,6 +7,8 @@ defmodule RemoteWeb.Router do
 
   scope "/api", RemoteWeb do
     pipe_through :api
+
+    get "/users", AccountsController, :index
   end
 
   # Enable LiveDashboard in development

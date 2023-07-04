@@ -36,9 +36,39 @@ defmodule Remote.Accounts do
     order = parse_order(search, opts[:order])
 
     User
+    |> join_user_salaries()
     |> filter_search(search)
     |> order_search(search, order)
     |> Repo.paginate(pagination)
+  end
+
+  # Join the active salary, if the user has one
+  # Join the latest inactive salary, if the user has one
+  # TODO: Solve the problem when two salaries have the same inactive_at, we get
+  # duplicated results because when joining the `inactive_salary` it finds two
+  # salaries for a given user with the same `inactive_at`.
+  defp join_user_salaries(query) do
+    max_inactive_at_subquery =
+      Salary
+      |> where([s], not is_nil(s.inactive_at))
+      |> group_by([s], s.user_id)
+      |> select([s], %{user_id: s.user_id, max_inactive_at: max(s.inactive_at)})
+
+    query
+    |> join(:left, [u], as in assoc(u, :active_salary), as: :as)
+    |> join(:left, [u], mia in subquery(max_inactive_at_subquery),
+      on: mia.user_id == u.id,
+      as: :mia
+    )
+    |> join(:left, [u, mia: mia], is in Salary,
+      on: is.user_id == u.id and is.inactive_at == mia.max_inactive_at,
+      as: :is
+    )
+    |> select([u, as: as, is: is], %{
+      u
+      | active_salary: as,
+        latest_inactive_salary: is
+    })
   end
 
   defp parse_search(nil), do: "%%"

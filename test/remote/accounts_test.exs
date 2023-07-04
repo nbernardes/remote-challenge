@@ -76,7 +76,7 @@ defmodule Remote.AccountsTest do
       user_a = insert(:user, name: "Sir John Doe")
       user_b = insert(:user, name: "Ma'am Jane Doe")
 
-      # By default, the users are order by ascending order if no search is given
+      # By default, the users are order by name ascending if no search is given
       %{entries: [user]} =
         Accounts.list_users_paginated(pagination: [page_size: 1])
 

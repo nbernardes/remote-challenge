@@ -12,8 +12,6 @@
 alias Remote.Accounts
 alias Remote.Utils.Currency
 
-now = DateTime.utc_now()
-
 Enum.each(1..20_000, fn _ ->
   {:ok, user} = Accounts.create_user(%{name: Faker.Person.name()})
 
@@ -28,14 +26,17 @@ Enum.each(1..20_000, fn _ ->
   # this variation, we check if the generated salary remainder from 2 is zero.
   # This leads so some randomness on the results, which is what we want. For the
   # second salary, it will always be inactive.
-  inactive_at = if rem(salary_1, 2) == 0, do: nil, else: now
+  inactive_at = if rem(salary_1, 2) == 0, do: nil, else: DateTime.utc_now()
 
-  Enum.each([{salary_1, inactive_at}, {salary_2, now}], fn {amount, inactive_at} ->
-    {:ok, _} =
-      Accounts.create_salary(%{
-        amount: Money.new(amount, currency),
-        user_id: user.id,
-        inactive_at: inactive_at
-      })
-  end)
+  Enum.each(
+    [{salary_1, inactive_at}, {salary_2, DateTime.utc_now()}],
+    fn {amount, inactive_at} ->
+      {:ok, _} =
+        Accounts.create_salary(%{
+          amount: Money.new(amount, currency),
+          user_id: user.id,
+          inactive_at: inactive_at
+        })
+    end
+  )
 end)
