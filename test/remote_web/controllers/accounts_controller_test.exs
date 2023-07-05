@@ -9,7 +9,7 @@ defmodule RemoteWeb.AccountsControllerTest do
 
       # We'll add a second salary that's inactive just to ensure the salary
       # that is being shown on the endpoint is the active/most recent
-      insert(:salary, user: user, inactive_at: DateTime.utc_now())
+      insert(:salary, user: user, inactive_since: DateTime.utc_now())
 
       conn = get(conn, ~p"/api/users")
 
@@ -24,7 +24,7 @@ defmodule RemoteWeb.AccountsControllerTest do
                      "value" => salary.amount.amount
                    },
                    "id" => salary.id,
-                   "inactive_at" => nil,
+                   "inactive_since" => nil,
                    "inserted_at" => DateTime.to_iso8601(salary.inserted_at),
                    "updated_at" => DateTime.to_iso8601(salary.updated_at)
                  },

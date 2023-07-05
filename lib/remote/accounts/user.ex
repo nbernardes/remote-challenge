@@ -10,7 +10,7 @@ defmodule Remote.Accounts.User do
     field :name, :string
     field :latest_salary, :map, virtual: true
 
-    has_one :active_salary, Salary, where: [inactive_at: nil]
+    has_one :active_salary, Salary, where: [inactive_since: nil]
     has_many :salaries, Salary
 
     timestamps()

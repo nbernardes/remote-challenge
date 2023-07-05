@@ -10,7 +10,7 @@ defmodule Remote.Accounts do
   @typep create_salary_attrs :: %{
            amount: Money.t(),
            user_id: User.id(),
-           inactive_at: DateTime.t()
+           inactive_since: DateTime.t()
          }
   @typep create_user_attrs :: %{name: binary}
   @typep page :: Scrivener.Page.t()
@@ -43,8 +43,8 @@ defmodule Remote.Accounts do
   end
 
   # Joins the latest salary of each user. The latest salary is determined by
-  # being the active salary (where `inactive_at` is nil) or the most recent
-  # inactive salary (the one with the highest `inactive_at` timestamp).
+  # being the active salary (where `inactive_since` is nil) or the most recent
+  # inactive salary (the one with the highest `inactive_since` timestamp).
   defp join_user_latest_salary(query) do
     query
     |> join(:left, [u], s in subquery(user_latest_salary_query()),
@@ -55,32 +55,32 @@ defmodule Remote.Accounts do
   end
 
   # Selects the salary with the lowest `row_num` from the query
-  # `inactive_at_ordered_salaries_query`, ensuring that we choose the active
+  # `inactive_since_ordered_salaries_query`, ensuring that we choose the active
   # salary or the most recent inactive salary.
   defp user_latest_salary_query do
     Salary
     |> join(
       :inner,
       [s],
-      ios in subquery(inactive_at_ordered_salaries_query()),
+      ios in subquery(inactive_since_ordered_salaries_query()),
       on: ios.id == s.id,
       as: :ios
     )
     |> where([s, ios: ios], ios.row_num == 1)
   end
 
-  # Retrieves all the salaries, ordering them by inactive_at (with nulls
+  # Retrieves all the salaries, ordering them by inactive_since (with nulls
   # appearing first), and assigns a row_num per user_id to handle cases where
-  # multiple salaries have the same `inactive_at`.
-  defp inactive_at_ordered_salaries_query do
+  # multiple salaries have the same `inactive_since`.
+  defp inactive_since_ordered_salaries_query do
     Salary
     |> select([s], %{
       user_id: s.user_id,
-      inactive_at: s.inactive_at,
+      inactive_since: s.inactive_since,
       id: s.id,
       row_num:
         fragment(
-          "ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY inactive_at DESC)"
+          "ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY inactive_since DESC)"
         )
     })
   end

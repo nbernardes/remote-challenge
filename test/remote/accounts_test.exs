@@ -112,8 +112,8 @@ defmodule Remote.AccountsTest do
 
   describe "get_active_salary_users_page/1" do
     test "gets a page of users with an active salary" do
-      %{user: user} = insert(:salary, inactive_at: nil)
-      insert(:salary, inactive_at: DateTime.utc_now())
+      %{user: user} = insert(:salary, inactive_since: nil)
+      insert(:salary, inactive_since: DateTime.utc_now())
 
       assert %{
                entries: [result_user],
@@ -127,7 +127,7 @@ defmodule Remote.AccountsTest do
     end
 
     test "returns empty when no users with active salary found" do
-      insert(:salary, inactive_at: DateTime.utc_now())
+      insert(:salary, inactive_since: DateTime.utc_now())
 
       assert %{
                entries: [],
