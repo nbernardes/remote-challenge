@@ -35,7 +35,7 @@ defmodule RemoteWeb.AccountsJSON do
     %{
       id: user.id,
       name: user.name,
-      salary: data(user.active_salary || user.latest_inactive_salary),
+      salary: data(user.latest_salary),
       inserted_at: user.inserted_at,
       updated_at: user.updated_at
     }

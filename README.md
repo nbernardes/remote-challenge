@@ -36,7 +36,7 @@ I've created a Postman Collection that you can import to Postman and use the API
 
 - Returns a list of users paginated.
   - Accepts pagination parameters
-    - `page`
+    - `page` (default 1)
     - `page_size` (default 50, max 1000)
   - Accepts order by name
     - `order` (values `asc` or `desc`)
@@ -47,8 +47,6 @@ I've created a Postman Collection that you can import to Postman and use the API
 
 - Returns a job id and the current status of the job (most of the times will be `available` since the job has just been scheduled to run)
 
-Having the endpoint working like this allows for the client to have a clear feedback of what happened. If the process was sync, it would take a lot of time to have a response on the endpoint (and probably would timeout either way).
-
 **> POST `/api/invite-users/status/{job-id}`**
 
 - Returns information about the job corresponding to the given `job-id`
@@ -58,12 +56,10 @@ To ease the ability to see completed jobs, I've disabled the `Oban Pruner` so al
 
 #
 
-## What is missing / I wanted to do better
-
-Here's a list of stuff I felt I could do better on the project or I haven't really found a solution that I've liked.
-
-- There is a caveat with the query that lists users. In cases where a user has two salaries with the same inactive_at timestamp, it results in duplicate entries. I have attempted to address this issue but have been unable to find a suitable solution. The problem arises from the attempt to retrieve all the necessary information within a single query. One potential approach could involve retrieving the data from the database first and then identifying users without an active salary, subsequently obtaining the most recent inactive salary. However, this solution didn't feel entirely satisfactory to me
+## Implementation details
 
 - Due to the direct updates I'm making to the Oban.Job to store additional information about the job process, I wasn't able to test the job effectively. The worker continues running until completion, making it impossible to assert anything about its execution. Additionally, in the test environment, for unknown reasons, the job no longer exists at the end of the execution
+
+- On the `/api/invite-users` endpoint, having it working like this allows for the client to have a clear feedback of what happened. If the process was sync, it would take a lot of time to have a response on the endpoint (and probably would timeout either way). The warning I've added from exausting the endpoint could be solved rate limiting the endpoint.
 
 - Having worked with GraphQL for several years, I strongly believe that it would be the ideal choice for this project due to its clarity and numerous advantages. (Although I must admit, my opinion might be slightly biased 😂)
