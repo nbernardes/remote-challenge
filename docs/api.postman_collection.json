@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "4387cbc3-4d17-485d-8650-987c8d8c4305",
+		"name": "Remote Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9546482"
+	},
+	"item": [
+		{
+			"name": "List Users Paginated",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/users?page=1&page_size=100",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "The page to get"
+						},
+						{
+							"key": "search",
+							"value": "fo",
+							"description": "Search by a components of a user name",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "asc",
+							"description": "How to order the data. Accepts \"asc\", \"desc\"",
+							"disabled": true
+						},
+						{
+							"key": "page_size",
+							"value": "100",
+							"description": "Amount of users per page. Default is 50, maximum is 1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invite Active Salary users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/invite-users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"invite-users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status on invite active salary users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/invite-users/status/:id",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"invite-users",
+						"status",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "7075299292230979584",
+							"description": "The ID of the job"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "https://remote-challenge.fly.dev",
+			"type": "string"
+		}
+	]
+}
