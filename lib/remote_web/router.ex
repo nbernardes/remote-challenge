@@ -9,6 +9,8 @@ defmodule RemoteWeb.Router do
     pipe_through :api
 
     get "/users", AccountsController, :index
+    post "/invite-users", AccountsController, :invite_users
+    get "/invite-users/status/:id", AccountsController, :invite_users_status
   end
 
   # Enable LiveDashboard in development
@@ -23,7 +25,9 @@ defmodule RemoteWeb.Router do
     scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
-      live_dashboard "/dashboard", metrics: RemoteWeb.Telemetry
+      live_dashboard "/dashboard",
+        metrics: RemoteWeb.Telemetry,
+        ecto_repos: [Remote.Repo]
     end
   end
 end

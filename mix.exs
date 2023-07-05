@@ -34,11 +34,13 @@ defmodule Remote.MixProject do
     [
       {:be_challengex, github: "remotecom/be_challengex", tag: "0.0.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:ecto_psql_extras, "~> 0.6"},
       {:ecto_sql, "~> 3.10"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:faker, "~> 0.17", only: [:dev, :test]},
       {:jason, "~> 1.2"},
       {:money, "~> 1.12"},
+      {:oban, "~> 2.14"},
       {:phoenix, "~> 1.7.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_live_dashboard, "~> 0.8.0"},

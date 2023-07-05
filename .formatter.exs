@@ -5,6 +5,9 @@
   line_length: 80,
   locals_without_parens: [
     # Phoenix
-    get: :*
+    get: :*,
+
+    # Oban
+    assert_enqueued: :*
   ]
 ]

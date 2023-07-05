@@ -110,6 +110,16 @@ defmodule Remote.Accounts do
     )
   end
 
+  @spec get_active_salary_users_page(keyword) :: page
+  def get_active_salary_users_page(opts \\ []) do
+    pagination = opts[:pagination] || []
+
+    User
+    |> join(:inner, [u], s in assoc(u, :active_salary))
+    |> select([u], %{name: u.name})
+    |> Repo.paginate(pagination)
+  end
+
   #
   # Salary
   #

@@ -12,6 +12,25 @@ defmodule RemoteWeb.AccountsJSON do
     }
   end
 
+  def invite_users(%{job: job}) do
+    %{
+      id: job.args.id,
+      status: job.state
+    }
+  end
+
+  def invite_users_status(%{job: job}) do
+    %{
+      id: job.args["id"],
+      status: job.state,
+      additional_info: %{
+        page_number: job.args["additional_info"]["page_number"],
+        total_entries: job.args["additional_info"]["total_entries"],
+        total_pages: job.args["additional_info"]["total_pages"]
+      }
+    }
+  end
+
   defp data(%User{} = user) do
     %{
       id: user.id,

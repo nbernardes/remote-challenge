@@ -110,6 +110,35 @@ defmodule Remote.AccountsTest do
     end
   end
 
+  describe "get_active_salary_users_page/1" do
+    test "gets a page of users with an active salary" do
+      %{user: user} = insert(:salary, inactive_at: nil)
+      insert(:salary, inactive_at: DateTime.utc_now())
+
+      assert %{
+               entries: [result_user],
+               page_number: 1,
+               page_size: 50,
+               total_pages: 1,
+               total_entries: 1
+             } = Accounts.get_active_salary_users_page()
+
+      assert result_user.name == user.name
+    end
+
+    test "returns empty when no users with active salary found" do
+      insert(:salary, inactive_at: DateTime.utc_now())
+
+      assert %{
+               entries: [],
+               page_number: 1,
+               page_size: 50,
+               total_pages: 1,
+               total_entries: 0
+             } = Accounts.get_active_salary_users_page()
+    end
+  end
+
   describe "create_salary/1" do
     test "creates salary for user" do
       user = insert(:user)

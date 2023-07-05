@@ -29,3 +29,6 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configures snowflake IDs
 config :snowflake, adapter: Snowflake.Adapter.Inline
+
+# Configures Oban
+config :remote, Oban, testing: :manual

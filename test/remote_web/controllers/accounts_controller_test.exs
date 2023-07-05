@@ -1,6 +1,8 @@
 defmodule RemoteWeb.AccountsControllerTest do
   use RemoteWeb.ConnCase, async: true
 
+  alias Remote.Accounts.Services.InviteUsers
+
   describe "index" do
     test "lists all users and respective salaries", %{conn: conn} do
       %{user: user} = salary = insert(:salary)
@@ -72,6 +74,42 @@ defmodule RemoteWeb.AccountsControllerTest do
                "total_entries" => 2,
                "total_pages" => 2
              }
+    end
+  end
+
+  describe "invite_users" do
+    test "returns the ID of the job responsible for sending the emails async",
+         %{conn: conn} do
+      conn = post(conn, ~p"/api/invite-users")
+
+      assert %{
+               "id" => _job_id,
+               "status" => "available"
+             } = json_response(conn, 200)
+    end
+  end
+
+  describe "invite_users_status" do
+    test "returns information about the job of inviting users", %{conn: conn} do
+      {:ok, job} = InviteUsers.call()
+
+      conn = get(conn, ~p"/api/invite-users/status/#{job.args.id}")
+
+      assert %{
+               "id" => _job_id,
+               "status" => "available",
+               "additional_info" => %{
+                 "page_number" => _,
+                 "total_entries" => _,
+                 "total_pages" => _
+               }
+             } = json_response(conn, 200)
+    end
+
+    test "fails when job isn't found", %{conn: conn} do
+      conn = get(conn, ~p"/api/invite-users/status/1")
+
+      assert json_response(conn, 404)["errors"] == %{"detail" => "Not Found"}
     end
   end
 end

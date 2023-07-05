@@ -62,3 +62,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# If user has a developer preferences file, import it
+if File.exists?("config/dev.prefs.exs"), do: import_config("dev.prefs.exs")

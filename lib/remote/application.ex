@@ -15,7 +15,8 @@ defmodule Remote.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Remote.PubSub},
       # Start the Endpoint (http/https)
-      RemoteWeb.Endpoint
+      RemoteWeb.Endpoint,
+      {Oban, Application.fetch_env!(:remote, Oban)}
       # Start a worker by calling: Remote.Worker.start_link(arg)
       # {Remote.Worker, arg}
     ]
