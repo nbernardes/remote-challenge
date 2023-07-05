@@ -4,8 +4,6 @@
 
 [Fly.io](https://remote-challenge.fly.dev/)
 
-(If the requests take a bit of time, don't worry, the machine is in a sleep state, and will go back up once the first request is sent. After that, all requests are in the normal Phoenix speed we are used to 💪)
-
 I've deployed the app to facilitate on the review process when there is no coding review involved. If you want to review the logic itself, you can use the link above, take a look on the endpoints below and play a bit! The database is filled with some dummy data.
 
 ⚠️ **Note:** Do not abuse on the **POST `/invite-users`** since it will make the same job for all active salary users without worrying if the user has already been notified or not.
